@@ -23,24 +23,22 @@ public class InitialSiteVerifier {
   public static final Path IMAGES_FOLDER = Paths.get("images");
 
   public static final Path[] XREF_FILES = new Path[] { Paths.get("stylesheet.css"),
-      Paths.get("overview-summary.html"), Paths.get("overview-frame.html"),
-      Paths.get("index.html"), Paths.get("allclasses-frame.html"), };
+      Paths.get("overview-summary.html"), Paths.get("overview-frame.html"), Paths.get("index.html"),
+      Paths.get("allclasses-frame.html"), };
 
-  public static final Path[] CSS_FILES = new Path[] { Paths.get("site.css"),
-      Paths.get("print.css"), Paths.get("maven-theme.css"), Paths.get("maven-base.css"), };
+  public static final Path[] CSS_FILES = new Path[] { Paths.get("site.css"), Paths.get("print.css"),
+      Paths.get("maven-theme.css"), Paths.get("maven-base.css"), };
 
   public static final Path[] IMAGES_FILES = new Path[] { Paths.get("newwindow.png"),
       Paths.get("icon_warning_sml.gif"), Paths.get("icon_success_sml.gif"),
       Paths.get("icon_info_sml.gif"), Paths.get("icon_error_sml.gif"), Paths.get("external.png"),
       Paths.get("expanded.gif"), Paths.get("collapsed.gif"), Paths.get("rss.png"), };
 
-  private String projectName;
+  private InitialSiteVerifier() {
 
-  public InitialSiteVerifier(String projectName) {
-    this.projectName = projectName;
   }
 
-  public boolean verifySite(Path sitePath) {
+  public static boolean verifySite(Path sitePath, String projectName) {
     final Path main = sitePath.resolve(projectName + ".html");
     boolean result = Files.exists(main) && Files.isRegularFile(main);
     result &= verifyFolder(sitePath, IMAGES_FOLDER, IMAGES_FILES);
@@ -49,12 +47,7 @@ public class InitialSiteVerifier {
     return result;
   }
 
-  public boolean copyEssentualSiteStructure(Path sitePath, Path newPath) {
-
-    return true;
-  }
-
-  private boolean verifyFolder(Path sitePath, Path folderPath, Path[] folderContent) {
+  private static boolean verifyFolder(Path sitePath, Path folderPath, Path[] folderContent) {
     boolean result = true;
     final Path fullFolderPath = sitePath.resolve(folderPath);
     for (Path path : folderContent) {
@@ -64,14 +57,14 @@ public class InitialSiteVerifier {
     return result;
   }
 
-  public void copyImmutableSiteFiles(Path pathSource, Path resultPath)
+  public static void copyImmutableSiteFiles(Path pathSource, Path resultPath)
       throws IllegalArgumentException, IOException {
     FilesystemUtils.copy(pathSource.resolve(IMAGES_FOLDER), resultPath.resolve(IMAGES_FOLDER));
     FilesystemUtils.copy(pathSource.resolve(CSS_FOLDER), resultPath.resolve(CSS_FOLDER));
     final Path xRefSource = pathSource.resolve(XREF_FOLDER);
     final Path xRefDest = resultPath.resolve(XREF_FOLDER);
     Files.createDirectory(xRefDest);
-    for (Path path:XREF_FILES) {
+    for (Path path : XREF_FILES) {
       FilesystemUtils.copy(xRefSource.resolve(path), xRefDest.resolve(path));
     }
   }

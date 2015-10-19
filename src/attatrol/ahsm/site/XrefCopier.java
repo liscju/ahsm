@@ -39,7 +39,7 @@ public class XrefCopier {
   }
 
   private static Path getXRefPath(Element element) {
-    Element link = element.child(1).child(1).child(4).child(0);
+    Element link = element.child(1).child(1).child(5).child(0);
     String url = link.attr("href");
     url = url.substring(0, url.lastIndexOf('#'));
     return Paths.get(url);

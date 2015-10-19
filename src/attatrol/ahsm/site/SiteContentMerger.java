@@ -20,6 +20,8 @@ public class SiteContentMerger {
   private int total2 = 0;
   private SiteContent content1;
   private SiteContent content2;
+  private String anchorName;
+  private int anchorNum;
 
   @SuppressWarnings("unused")
   private SiteContentMerger() {
@@ -29,10 +31,8 @@ public class SiteContentMerger {
   public SiteContentMerger(SiteContent content1, SiteContent content2) {
     this.content1 = content1;
     this.content2 = content2;
-    firstUnique = new Element(Tag.valueOf("td"), "");
-    secondUnique = new Element(Tag.valueOf("td"), "");
-    firstUnique.text(content1.getSimpleName());
-    secondUnique.text(content2.getSimpleName());
+    firstUnique = new Element(Tag.valueOf("td"), "").text(content1.getSimpleName());
+    secondUnique = new Element(Tag.valueOf("td"), "").text(content2.getSimpleName());
   }
 
   public SiteContent merge() {
@@ -43,6 +43,7 @@ public class SiteContentMerger {
     keysAll.addAll(entries2.keySet());
     Map<String, Element> mergedMap = new HashMap<>();
     for (String name : keysAll) {
+      setAnchorName(name.substring(name.length() - 9, name.length() - 5));
       final Element entry1 = entries1.get(name);
       final Element entry2 = entries2.get(name);
       if (entry1 == null) {
@@ -60,11 +61,13 @@ public class SiteContentMerger {
     Element mergedSummary = generateSection();
     mergedSummary.appendText("\n");
     Element summary1 = content1.getSummarySection().clone();
-    summary1.appendElement("h3").text(
-        "Got unique rows for \"" + content1.getSimpleName() + "\":" + total1).appendText("\n");
+    summary1.appendElement("h3")
+        .text("Got unique rows for \"" + content1.getSimpleName() + "\":" + total1)
+        .appendText("\n");
     Element summary2 = content2.getSummarySection().clone();
-    summary2.appendElement("h3").text(
-        "Got unique rows for \"" + content2.getSimpleName() + "\":" + total2).appendText("\n");
+    summary2.appendElement("h3")
+        .text("Got unique rows for \"" + content2.getSimpleName() + "\":" + total2)
+        .appendText("\n");
     mergedSummary.appendChild(summary1);
     mergedSummary.appendText("\n");
     mergedSummary.appendChild(summary2);
@@ -73,7 +76,6 @@ public class SiteContentMerger {
     total1 = 0;
     total2 = 0;
     return merge;
-
   }
 
   private Element firstFullEntry(Element entry) {
@@ -86,12 +88,14 @@ public class SiteContentMerger {
         .attr("class", "bodyTable");
     Element header = table.children().first();
     header.appendElement("th").text("Site");
+    header.prependElement("th").text("Anchor");
     mergePoint.appendChild(header).appendText("\n");
     for (ListIterator<Element> iterator = table.children().listIterator(); iterator.hasNext();) {
       total1++;
       final Element current = iterator.next();
       current.attr("class", "a");
       current.appendChild(firstUnique.clone());
+      current.prependChild(getAnchor());
       mergePoint.appendChild(current);
       mergePoint.appendText("\n");
     }
@@ -108,12 +112,14 @@ public class SiteContentMerger {
         .attr("class", "bodyTable");
     Element header = table.children().first();
     header.appendElement("th").text("Site");
+    header.prependElement("th").text("Anchor");
     mergePoint.appendChild(header).appendText("\n");
     for (ListIterator<Element> iterator = table.children().listIterator(); iterator.hasNext();) {
       total2++;
       final Element current = iterator.next();
       current.attr("class", "b");
       current.appendChild(secondUnique.clone());
+      current.prependChild(getAnchor());
       mergePoint.appendChild(current);
       mergePoint.appendText("\n");
     }
@@ -134,6 +140,7 @@ public class SiteContentMerger {
         .attr("class", "bodyTable");
     Element header = table1.children().first();
     header.appendElement("th").text("Site");
+    header.prependElement("th").text("Anchor");
     mergePoint.appendChild(header).appendText("\n");
 
     // first check
@@ -152,7 +159,9 @@ public class SiteContentMerger {
         total1++;
         final Element addition = current1.clone();
         addition.attr("class", "a");
+        addition.prependChild(getAnchor());
         addition.appendChild(firstUnique.clone());
+
         mergePoint.appendChild(addition);
         mergePoint.appendText("\n");
       }
@@ -173,15 +182,16 @@ public class SiteContentMerger {
         total2++;
         final Element addition = current2.clone();
         addition.attr("class", "b");
+        addition.prependChild(getAnchor());
         addition.appendChild(secondUnique.clone());
+
         mergePoint.appendChild(addition);
         mergePoint.appendText("\n");
       }
     }
     if (noMerging) {
       return null;
-    } 
-    else {
+    } else {
       return merge;
     }
   }
@@ -202,7 +212,6 @@ public class SiteContentMerger {
    * @return
    */
   private static boolean rowEqualityCheck(Element a, Element b) {
-    // boolean equality = true;
     Iterator<Element> valueA = a.getElementsByTag("td").iterator();
     Iterator<Element> valueB = b.getElementsByTag("td").iterator();
     while (valueA.hasNext() && valueB.hasNext()) {
@@ -216,6 +225,20 @@ public class SiteContentMerger {
       return false;
     }
     return true;
+  }
+
+  private void setAnchorName(String name) {
+    anchorName = name;
+    anchorNum = 1;
+  }
+
+  private Element getAnchor() {
+    final String anchorText = String.format("%s.%d", anchorName, anchorNum);
+    final String name = String.format("%s.%d", anchorText, total1 + total2);
+    anchorNum++;
+    Element anchor = new Element(Tag.valueOf("td"), "");
+    anchor.appendElement("a").attr("name", name).attr("href", "#" + name).text(anchorText);
+    return anchor;
   }
 
 }
