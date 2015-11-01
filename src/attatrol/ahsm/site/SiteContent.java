@@ -3,31 +3,30 @@ package attatrol.ahsm.site;
 import java.util.Map;
 
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 
 public class SiteContent {
 
-  private Map<String, Element> fileTables;
-  private Element summarySection; 
-  private String simpleName;
-  
-  public SiteContent(Map<String, Element> fileTables, Element summarySection, String simpleName) {
-    this.fileTables = fileTables;
-    this.summarySection = summarySection;
-    this.simpleName = simpleName;
-    summarySection.getElementsByTag("h2").first().remove();
-    this.summarySection = summarySection;
-  }
+    private Map<String, Element> fileTables;
+    private Element summarySection;
+    private String simpleName;
 
-  public Map<String, Element> getFileTables() {
-    return fileTables;
-  }
+    public SiteContent(Map<String, Element> fileTables, Element summarySection, String simpleName) {
+        this.fileTables = fileTables;
+        this.summarySection = summarySection;
+        this.simpleName = simpleName;
+        summarySection.getElementsByTag("h2").first().remove();
+        this.summarySection = summarySection;
+    }
 
-  public Element getSummarySection() {
-    return summarySection;
-  }
+    public Map<String, Element> getFileTables() {
+        return fileTables;
+    }
 
-  public String getSimpleName() {
-    return simpleName;
-  }
+    public Element getSummarySection() {
+        return summarySection;
+    }
+
+    public String getSimpleName() {
+        return simpleName;
+    }
 }
