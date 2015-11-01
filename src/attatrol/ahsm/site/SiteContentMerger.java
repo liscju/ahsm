@@ -20,17 +20,19 @@ public class SiteContentMerger {
   private int total2 = 0;
   private SiteContent content1;
   private SiteContent content2;
+  private final String resultSiteId;
   private String anchorName;
   private int anchorNum;
 
   @SuppressWarnings("unused")
   private SiteContentMerger() {
-
+    this.resultSiteId = null;
   }
 
-  public SiteContentMerger(SiteContent content1, SiteContent content2) {
+  public SiteContentMerger(SiteContent content1, SiteContent content2, String resultSiteId) {
     this.content1 = content1;
     this.content2 = content2;
+    this.resultSiteId = resultSiteId;
     firstUnique = new Element(Tag.valueOf("td"), "").text(content1.getSimpleName());
     secondUnique = new Element(Tag.valueOf("td"), "").text(content2.getSimpleName());
   }
@@ -58,20 +60,7 @@ public class SiteContentMerger {
       }
     }
 
-    Element mergedSummary = generateSection();
-    mergedSummary.appendText("\n");
-    Element summary1 = content1.getSummarySection().clone();
-    summary1.appendElement("h3")
-        .text("Got unique rows for \"" + content1.getSimpleName() + "\":" + total1)
-        .appendText("\n");
-    Element summary2 = content2.getSummarySection().clone();
-    summary2.appendElement("h3")
-        .text("Got unique rows for \"" + content2.getSimpleName() + "\":" + total2)
-        .appendText("\n");
-    mergedSummary.appendChild(summary1);
-    mergedSummary.appendText("\n");
-    mergedSummary.appendChild(summary2);
-    mergedSummary.appendText("\n");
+    final Element mergedSummary = generateSummary();
     SiteContent merge = new SiteContent(mergedMap, mergedSummary);
     total1 = 0;
     total2 = 0;
@@ -239,6 +228,31 @@ public class SiteContentMerger {
     Element anchor = new Element(Tag.valueOf("td"), "");
     anchor.appendElement("a").attr("name", name).attr("href", "#" + name).text(anchorText);
     return anchor;
+  }
+  
+  private Element generateSummary() {
+    Element mergedSummary = generateSection();
+    mergedSummary.appendText("\n").appendElement("h3")
+        .text("Summary for " + resultSiteId).appendText("\n");
+    Element mergedSummaryTable = content1.getSummarySection().getElementsByTag("table").first().clone();
+    Element mergedSummaryTableHeader = mergedSummaryTable.getElementsByTag("tr").first();
+    Element summary1ResultRow = mergedSummaryTable.getElementsByTag("tr").get(1);
+    Element summary2ResultRow = content2.getSummarySection().getElementsByTag("tr").get(1).clone();
+    mergedSummaryTable.appendChild(summary2ResultRow);
+
+    summary1ResultRow.prependElement("td").text(Integer.toString(total1)).appendText("\n");
+    summary1ResultRow.prependElement("td").text(content1.getSimpleName()).appendText("\n");
+    summary1ResultRow.attr("class","a");
+
+    summary2ResultRow.prependElement("td").text(Integer.toString(total2)).appendText("\n");
+    summary2ResultRow.prependElement("td").text(content2.getSimpleName()).appendText("\n");
+
+    mergedSummaryTableHeader.prependElement("th").text("Unique rows").appendText("\n");
+    mergedSummaryTableHeader.prependElement("th").text("Site name").appendText("\n");
+
+    mergedSummary.appendChild(mergedSummaryTable);
+    mergedSummary.appendText("\n");
+    return mergedSummary.appendText("\n");
   }
 
 }
