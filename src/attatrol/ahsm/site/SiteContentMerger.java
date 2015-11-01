@@ -119,7 +119,6 @@ public class SiteContentMerger {
     boolean noMerging = true;
     Element residue1 = entry1.clone();
     Element residue2 = entry2.clone();
-
     Element merge = generateSection();
     merge.appendChild(residue1.children().first());
     merge.appendText("\n");
@@ -232,7 +231,7 @@ public class SiteContentMerger {
   
   private Element generateSummary() {
     Element mergedSummary = generateSection();
-    mergedSummary.appendText("\n").appendElement("h3")
+    mergedSummary.appendText("\n").appendElement("h2")
         .text("Summary for " + resultSiteId).appendText("\n");
     Element mergedSummaryTable = content1.getSummarySection().getElementsByTag("table").first().clone();
     Element mergedSummaryTableHeader = mergedSummaryTable.getElementsByTag("tr").first();

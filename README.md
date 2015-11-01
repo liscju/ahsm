@@ -16,10 +16,8 @@ You have 2 different checkstyle repos, original and forked, for each of them do 
         - name of the project
         - name of the first site
         - name of the second site
-        - name of the resulting site
+        - name of the resulting site (facultative, if absent then default path will be used: ~/ahsm_report_yyyy.mm.dd_hh:mm:ss)
         i.e. java ./ahsm.jar -jar checkstyle ~/eclipse_workspace/tester-checkstyle/checkstyle-tester/site_vanilla ~/eclipse_workspace/tester-checkstyle/checkstyle-tester/site_forked ~/Documents/eclipse_workspace/tester-checkstyle/checkstyle-tester/site_result
-  6. you may want to replace original css with one with distinctive colours from here 
-    https://github.com/attatrol/attatrol.github.io/tree/master/site_result/css
 
     example of result site here:
-    http://attatrol.github.io/site_result2_rebase/checkstyle_merged.html
+    http://attatrol.github.io/ahsm_current_example/checkstyle_merged.html

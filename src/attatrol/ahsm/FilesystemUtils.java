@@ -59,7 +59,7 @@ public class FilesystemUtils {
   public static void copyFile(Path source, Path destination) throws IOException {
     Path destFolders = destination.getParent();
     if(Files.notExists(destFolders)) {
-      Files.createDirectories(destFolders);
+        Files.createDirectories(destFolders);
     }
     Files.copy(source, destination);
   }

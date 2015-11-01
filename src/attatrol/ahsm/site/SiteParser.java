@@ -29,6 +29,7 @@ import attatrol.ahsm.FilesystemUtils;
  *
  */
 public class SiteParser {
+  
   public static SiteContent parse(Path sitePath, String simpleName) throws IOException {
     final Document doc = Jsoup.parse(sitePath.toFile(), "UTF-8");
     final Element table = doc.getElementById("contentBox");
@@ -57,6 +58,7 @@ public class SiteParser {
     final Attributes attrs = new Attributes();
     attrs.put("class","section");
     Element mergedTableSection = new Element(Tag.valueOf("div"), "", attrs);
+    mergedTableSection.appendText("\n").appendElement("h2").text("Content").attr("a", "Content");
     final Map<String,Element> entries = content.getFileTables();
     List<String> keys = new ArrayList<String>(entries.keySet());
     Collections.sort(keys);
@@ -65,8 +67,11 @@ public class SiteParser {
       mergedTableSection.appendText("\n");
     }
     tableSection.replaceWith(mergedTableSection);
-    //delete irrelevant
+    //clean irrelevant
     doc.getElementsByAttributeValue("id", "leftColumn").first().remove();
+    doc.getElementsByAttributeValue("id", "banner").first().remove();
+    doc.getElementsByAttributeValue("id", "breadcrumbs").first().remove();
+    doc.getElementsByAttributeValue("name", "Rules").first().parent().parent().remove();
     return doc;
     
   }

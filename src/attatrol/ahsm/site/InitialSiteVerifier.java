@@ -27,7 +27,7 @@ public class InitialSiteVerifier {
       Paths.get("allclasses-frame.html"), };
 
   public static final Path[] CSS_FILES = new Path[] { Paths.get("site.css"), Paths.get("print.css"),
-      Paths.get("maven-theme.css"), Paths.get("maven-base.css"), };
+      Paths.get("maven-base.css"), };
 
   public static final Path[] IMAGES_FILES = new Path[] { Paths.get("newwindow.png"),
       Paths.get("icon_warning_sml.gif"), Paths.get("icon_success_sml.gif"),
@@ -67,6 +67,13 @@ public class InitialSiteVerifier {
     for (Path path : XREF_FILES) {
       FilesystemUtils.copy(xRefSource.resolve(path), xRefDest.resolve(path));
     }
+
+    // replace with local maven-theme.css
+    final Path cssReplaceDest = resultPath.resolve(CSS_FOLDER).resolve("maven-theme.css");
+    FilesystemUtils.delete(cssReplaceDest);
+    FilesystemUtils.copyFile(
+        Paths.get(System.getProperty("user.dir")).resolve("resources").resolve("maven-theme.css"),
+        cssReplaceDest);
   }
 
 }

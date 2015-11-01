@@ -71,7 +71,7 @@ public class Main {
         resultPath = args.length >= 4 ? Paths.get(args[3])
             : Paths.get(System.getProperty("user.home"))
             .resolve("ahsm_report_"
-                      + new SimpleDateFormat("yyyyMMdd_HHmmss")
+                      + new SimpleDateFormat("yyyy.MM.dd_HH:mm:ss")
                       .format(Calendar.getInstance().getTime()));
         preparationStage(pathSite1, pathSite2, resultPath);
         System.out.println(MSG_PREPARATION_SUCCESS);
