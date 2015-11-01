@@ -18,23 +18,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 
+import static attatrol.ahsm.Main.HELP_TEXT;
+import static attatrol.ahsm.Main.HELP_FILENAME;
+import static attatrol.ahsm.Main.HELP_HTML_LINK;
+import static attatrol.ahsm.Main.SOURCE_LINK;
+
 /**
  * Handles data transition from html file to SiteContent instance and in the other direction.
  * @author atta_troll
  */
 public class SiteParser
 {
-
-    public static final String HELP_FILENAME = "ahsm-help.html";
-
-    public static final String[] HELP_TEXT = {
-            "This is symmetric difference generated from two maven-site reports.",
-            "All matching rows from each report are deleted, then remaining rows are merged into single report.",
-            "Currently number of identical lines in each report is not taken into account." };
-
-    public static final String SOURCE_LINK = "https://github.com/attatrol/ahsm";
-
-    public static final String HELP_HTML_LINK = "ahsm-help.html";
 
     /**
      * Parsing site date from html maven site into SiteContent TODO overhaul ASAP!, reuse without

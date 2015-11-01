@@ -14,8 +14,19 @@ import attatrol.ahsm.site.SiteContentMerger;
 import attatrol.ahsm.site.SiteParser;
 import attatrol.ahsm.site.XrefCopier;
 
-public class Main
-{
+public class Main {
+    
+    /**
+     * Content of help html.
+     */
+    public static final String HELP_FILENAME = "ahsm-help.html";
+    public static final String SOURCE_LINK = "https://github.com/attatrol/ahsm";
+    public static final String HELP_HTML_LINK = "ahsm-help.html";
+    public static final String[] HELP_TEXT = {
+            "This is symmetric difference generated from two maven-site reports.",
+            "All matching rows from each report are deleted, then remaining rows are merged into single report.",
+            "Currently number of identical lines in each report is not taken into account.", };
+    
     /**
      * Messages for errors.
      */
