@@ -16,13 +16,6 @@ public class SiteContent {
     this.summarySection = summarySection;
     this.simpleName = simpleName;
     summarySection.getElementsByTag("h2").first().remove();
-    this.summarySection = new Element(Tag.valueOf("div"), "").attr("class", "section");
-    this.summarySection.appendElement("h2").attr("id", "Summary").text("Summary for " + simpleName +":");
-    this.summarySection.appendChild(summarySection);
-  }
-  
-  public SiteContent(Map<String, Element> fileTables, Element summarySection) {
-    this.fileTables = fileTables;
     this.summarySection = summarySection;
   }
 

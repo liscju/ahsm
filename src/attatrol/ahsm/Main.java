@@ -17,7 +17,7 @@ public class Main {
   /**
    * Messages for errors.
    */
-  public static final String MSG_WRONG_NUMBER_OF_ARGS = "Not enough command line args, need at least 4.";
+  public static final String MSG_WRONG_NUMBER_OF_ARGS = "Not enough command line args, need at least 3.";
   public static final String MSG_BAD_PATH = "Failed to resolve path to site: ";
   public static final String MSG_NOT_EXISTS = "Site directory doesnt exist: ";
   public static final String MSG_BAD_SITE = "Failed to locate essentual files that belong to the site: ";
@@ -67,7 +67,6 @@ public class Main {
         // resolving paths
         pathSite1 = Paths.get(args[1]);
         pathSite2 = Paths.get(args[2]);
-        // TODO test with default path
         resultPath = args.length >= 4 ? Paths.get(args[3])
             : Paths.get(System.getProperty("user.home"))
             .resolve("ahsm_report_"
@@ -112,7 +111,7 @@ public class Main {
     final SiteContent site2Content = getContent(pathSite2);
     final String resultSiteId = projectName +" - " + resultPath.getName(resultPath.getNameCount() - 1).toString();
     final SiteContent mergedContent = new SiteContentMerger(site1Content, site2Content, resultSiteId).merge();
-    exportToFile(mergedContent, resultPath, pathSite1);
+    SiteParser.exportToFile(mergedContent, resultPath.resolve(projectName + "_merged.html"));
     XrefCopier.copyXrefFiles(mergedContent.getFileTables(), pathSite1, pathSite2, resultPath);
   }
 
@@ -177,20 +176,6 @@ public class Main {
     final Path subject1 = pathSite1.resolve(projectName + ".html");
     return SiteParser.parse(subject1,
         pathSite1.getName(pathSite1.getNameCount() - 1).toString());
-  }
-
-  /**
-   * Export SiteContent into file.
-   * 
-   * @param mergedContent result site content.
-   * @param resultPath path to the result site.
-   * @param inputPathSite, used as template/ TODO delete it ASAP
-   * @throws IOException on i/o failure.
-   */
-  private static void exportToFile(SiteContent mergedContent, Path resultPath, Path inputPathSite)
-      throws IOException {
-    final Path templatePath = inputPathSite.resolve(projectName + ".html");
-    SiteParser.exportToFile(mergedContent, resultPath, templatePath, projectName);
   }
 
 }

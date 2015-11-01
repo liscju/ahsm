@@ -61,7 +61,7 @@ public class SiteContentMerger {
     }
 
     final Element mergedSummary = generateSummary();
-    SiteContent merge = new SiteContent(mergedMap, mergedSummary);
+    SiteContent merge = new SiteContent(mergedMap, mergedSummary, resultSiteId);
     total1 = 0;
     total2 = 0;
     return merge;
