@@ -70,12 +70,14 @@ public class InitialSiteVerifier {
         }
 
         // replace with local maven-theme.css
-        final Path cssReplaceDest = resultPath.resolve(CSS_FOLDER).resolve("maven-theme.css");
+        /*final Path cssReplaceDest = resultPath.resolve(CSS_FOLDER).resolve("maven-theme.css");
         FilesystemUtils.delete(cssReplaceDest);
         FilesystemUtils.copyFile(
                 Paths.get(System.getProperty("user.dir")).resolve("resources")
                         .resolve("maven-theme.css"),
-                cssReplaceDest);
+                cssReplaceDest);*/
+        FilesystemUtils.exportResource("/resources/maven-theme.css", 
+                resultPath.resolve(CSS_FOLDER).resolve("maven-theme.css"));
     }
 
 }

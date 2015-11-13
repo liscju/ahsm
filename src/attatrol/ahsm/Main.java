@@ -71,10 +71,9 @@ public class Main {
             Path pathSite1 = null;
             Path pathSite2 = null;
             Path resultPath = null;
-            // preparation stage of the process
             try {
                 projectName = args[0];
-                // resolving paths
+
                 pathSite1 = Paths.get(args[1]);
                 pathSite2 = Paths.get(args[2]);
                 resultPath = args.length >= 4 ? Paths.get(args[3])
@@ -82,9 +81,9 @@ public class Main {
                                 .resolve("ahsm_report_"
                                         + new SimpleDateFormat("yyyy.MM.dd_HH:mm:ss")
                                                 .format(Calendar.getInstance().getTime()));
+                
                 preparationStage(pathSite1, pathSite2, resultPath);
                 System.out.println(MSG_PREPARATION_SUCCESS);
-                // merging stage
                 try {
                     mergingStage(pathSite1, pathSite2, resultPath);
                     System.out.println(MSG_GENERAL_SUCCESS);
