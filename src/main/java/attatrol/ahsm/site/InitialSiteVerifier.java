@@ -76,7 +76,7 @@ public class InitialSiteVerifier {
                 Paths.get(System.getProperty("user.dir")).resolve("resources")
                         .resolve("maven-theme.css"),
                 cssReplaceDest);*/
-        FilesystemUtils.exportResource("/resources/maven-theme.css", 
+        FilesystemUtils.exportResource("/maven-theme.css",
                 resultPath.resolve(CSS_FOLDER).resolve("maven-theme.css"));
     }
 
